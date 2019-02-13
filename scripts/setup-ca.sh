@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 # Create policies for CA
-sudo VAULT_ADDR="http://127.0.0.1:8200" vault policy write CA-policy /vagrant/ca-policy.hcl
+sudo VAULT_ADDR="http://127.0.0.1:8200" vault policy write CA-policy /vagrant/config/ca-policy.hcl
 
 #  View existing policies
-vault policy list
+sudo VAULT_ADDR="http://127.0.0.1:8200" vault policy list
 
 # View  CA-policy
-vault policy read CA-policy
+sudo VAULT_ADDR="http://127.0.0.1:8200" vault policy read CA-policy
 
 
 # enable the pki secrets engine at the pki path
@@ -32,7 +32,6 @@ sudo openssl x509 -in CA_cert.crt -text
 sudo openssl x509 -in CA_cert.crt -noout -dates
 
 ## Generate Intermediate CA
-
 # First, enable the pki secrets engine at the pki_int path
 sudo VAULT_ADDR="http://127.0.0.1:8200" vault secrets enable -path=pki_int pki
 
@@ -53,7 +52,6 @@ sudo VAULT_ADDR="http://127.0.0.1:8200" vault write -format=json pki/root/sign-i
 sudo VAULT_ADDR="http://127.0.0.1:8200" vault write pki_int/intermediate/set-signed certificate=@intermediate.cert.pem
 
 ## Create a Role
-
 # Create a role named mydomain-dot-com which allows subdomains.
 sudo VAULT_ADDR="http://127.0.0.1:8200" vault write pki_int/roles/mydomain-dot-com \
         allowed_domains="mydomain.com" \
@@ -61,6 +59,5 @@ sudo VAULT_ADDR="http://127.0.0.1:8200" vault write pki_int/roles/mydomain-dot-c
         max_ttl="720h"
 
 ## Request Certificates
-
 # to request a new certificate for the test.mydomain.com domain based on the mydomain-dot-com role:
 sudo VAULT_ADDR="http://127.0.0.1:8200" vault write pki_int/issue/mydomain-dot-com common_name="test.mydomain.com" ttl="24h"
