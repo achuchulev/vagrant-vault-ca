@@ -25,7 +25,7 @@ Vagrant up run:
 
 `scripts/vault.sh` that:
 
-- start vault
+- start vault in Dev mode
 - print root vault token
 
 `scripts/setup-ca.sh` that configure CA and Intermediate CA for CN "mydomain.com" as follows:
