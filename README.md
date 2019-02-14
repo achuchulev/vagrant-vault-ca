@@ -47,7 +47,7 @@ Vagrant up run:
 ### with CLI
 
 ```
-vagrant ssh vault
+vagrant ssh
 sudo su -
 vault write pki_int/issue/mydomain-dot-com common_name="subdomain.mydomain.com" ttl="24h"
 ```
